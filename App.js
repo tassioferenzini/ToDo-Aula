@@ -1,32 +1,30 @@
-import AddItem from './src/components/AddItem';
-import ListItems from './src/components/ListItems';
-import 'react-native-get-random-values'
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import AddItem from './src/add';
+import ListItems from './src/list';
 import { v4 as uuidv4 } from 'uuid';
-import React, { useEffect, useState } from "react";
-import type { Node } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import RNBootSplash from "react-native-bootsplash";
+import "react-native-get-random-values";
+import Toast from 'react-native-toast-message';
 
-const App: () => Node = () => {
-
-  useEffect(() => {
-    const init = async () => {
-      // …do multiple sync or async tasks
-    };
-
-    init().finally(async () => {
-      await RNBootSplash.hide({ fade: true, duration: 500 });
-    });
-  }, []);
+export default function bolinha() {
 
   const [list, setList] = useState([]);
 
   const addItem = (text) => {
-    const newItem = {
-      id: uuidv4(),
-      task: text,
-    };
-    setList([newItem, ...list]);
+
+    if (text == '') {
+      Toast.show({
+        type: 'error',
+        text1: 'Valor Vazio',
+      });
+    } else {
+      const newItem = {
+        id: uuidv4(),
+        task: text,
+      };
+      setList([newItem, ...list]);
+    }
   };
 
   const DeleteItem = (id) => {
@@ -35,17 +33,25 @@ const App: () => Node = () => {
   };
 
   return (
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Todo List</Text>
-        <AddItem addItem={addItem}></AddItem>
-        <ListItems deleteItem={DeleteItem} listItems={list}></ListItems>
-        <StatusBar style="auto" />
-      </View>
+    <View style={styles.container}>
+      <Image
+        source={{ uri: "https://reactnative.dev/docs/assets/p_cat1.png" }}
+        style={{ width: 200, height: 200 }}
+      />
+      <Text style={styles.sectionTitle}>Lista ToDo</Text>
+      <AddItem addItem={addItem}></AddItem>
+      <ListItems deleteItem={DeleteItem} listItems={list}></ListItems>
+      <StatusBar style="auto" />
+      <Toast
+        position='top'
+        bottomOffset={20}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
+  container: {
     marginTop: 32,
     paddingHorizontal: 24,
   },
@@ -54,6 +60,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-
-
-export default App;

@@ -1,30 +1,39 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Keyboard } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text, Keyboard } from "react-native";
 
 export default function addItem(props) {
 
     const [item, setItem] = useState('');
 
     return (
+
         <View>
-            <Text>Entre com o próximo item</Text>
+            <Text style={styles.text}>Entre com o próximo item</Text>
             <TextInput
                 onChangeText={(textVal) => {
                     setItem(textVal);
                 }}
-                style={{
-                    borderBottomColor: 'black',
-                    backgroundColor: '#f4f4f4',
-                    margin: 4,
-                }}
-            ></TextInput>
+                style={styles.input}
+            />
             <Button
                 onPress={() => {
                     props.addItem(item);
                     Keyboard.dismiss();
                 }}
-                title="Salvar"
-            ></Button>
+                title="Salvar" />
         </View>
-    );
+
+    )
+
 }
+
+const styles = StyleSheet.create({
+    input: {
+        borderBottomColor: 'black',
+        backgroundColor: '#f4f4f4',
+        margin: 4,
+    },
+    text: {
+        fontWeight: 700,
+    }
+});
